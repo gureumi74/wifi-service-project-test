@@ -3,6 +3,25 @@ plugins {
     id 'war' // jsp
 }
 
+// jsp 프로젝트를 위해 필요한 설정
+sourceSets {
+    def webappDir = file('src/main/webapp')
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+
+        resources {
+            srcDirs webappDir
+        }
+    }
+    doLast {
+        main.resources.srcDirs*.mkdirs()
+        new File(webappDir, 'WEB-INF').mkdir()
+        new File(webappDir, 'META-INF').mkdir()
+    }
+}
+
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
@@ -21,7 +40,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10'
 
     // SQLite JDBC 드라이버
-    implementation 'org.xerial:sqlite-jdbc:3.41.2'
+    implementation 'org.xerial:sqlite-jdbc:3.41.2.0'
 
     // Lombok (Getter/Setter 자동 생성)
     compileOnly 'org.projectlombok:lombok:1.18.28'
